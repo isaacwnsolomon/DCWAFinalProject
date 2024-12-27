@@ -3,7 +3,9 @@ var mysqlDAO = require('./mySqlDao')
 var app = express()
 const studentpage = require('./studentpage'); // Import the students route
 app.set('view engine', 'ejs') // after app variable
-
+var bodyParser = require('body-parser') 
+app.use(bodyParser.urlencoded({extended: false})) // Middleware to parse POST form data
+const { check, validationResult } = require('express-validator');
 
 
 
