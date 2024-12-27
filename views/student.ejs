@@ -1,0 +1,15 @@
+<table>
+    <tr>
+        <th>SID</th>
+        <th>Name</th>
+        <th>Age</th>
+    </tr>
+    <% studentsList.forEach((student) => { %>
+        <tr>
+            <td><%= student.sid %></td>
+            <td><%= student.name %></td>
+            <td><%= student.age %></td>
+        </tr>
+    <% }) %>
+</table>
+    
