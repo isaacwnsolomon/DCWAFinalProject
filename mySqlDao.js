@@ -1,5 +1,5 @@
 var promisemysql = require('promise-mysql')
-
+let pool;
 promisemysql.createPool({
     connectionLimit : 3,
     host : 'localhost',
@@ -27,16 +27,22 @@ promisemysql.createPool({
         })
     })
 }
-  // Add a new student
 const addStudent = function (name, age) {
     return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO student (name, age) VALUES (?, ?)', [name, age])
+        // Generate a new sid (G + number, padded to 3 digits)
+        pool.query('SELECT MAX(CAST(SUBSTRING(sid, 2) AS UNSIGNED)) as maxId FROM student')
+            .then(result => {
+                const nextId = (result[0].maxId || 0) + 1;
+                const newSid = 'G' + String(nextId).padStart(3, '0');
+                
+                // Insert new student with generated sid
+                return pool.query('INSERT INTO student (sid, name, age) VALUES (?, ?, ?)', 
+                    [newSid, name || null, age || null]);
+            })
             .then((result) => {
-                console.log('Student added:', result);
                 resolve(result);
             })
             .catch((error) => {
-                console.error('Error adding student:', error);
                 reject(error);
             });
     });
