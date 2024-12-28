@@ -94,6 +94,20 @@ var getGrades = function(){
         })
     })
 }
+const getModulesByLecturerId = function (lecturerId) {
+    return new Promise((resolve, reject) => {
+        pool.query(
+            'SELECT * FROM module WHERE lecturer = ?',
+            [lecturerId],
+            (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            }
+        );
+    });
+};
 
-
-module.exports = { getStudents, addStudent, getStudentById, updateStudent, getGrades}
+module.exports = { getModulesByLecturerId, getStudents, addStudent, getStudentById, updateStudent, getGrades}
