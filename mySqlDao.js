@@ -27,18 +27,24 @@ promisemysql.createPool({
         })
     })
 }
-const addStudent = function (name, age) {
+const addStudent = function (sid, name, age) {
     return new Promise((resolve, reject) => {
-        // Generate a new sid (G + number, padded to 3 digits)
-        pool.query('SELECT MAX(CAST(SUBSTRING(sid, 2) AS UNSIGNED)) as maxId FROM student')
-            .then(result => {
-                const nextId = (result[0].maxId || 0) + 1;
-                const newSid = 'G' + String(nextId).padStart(3, '0');
-                
-                // Insert new student with generated sid
-                return pool.query('INSERT INTO student (sid, name, age) VALUES (?, ?, ?)', 
-                    [newSid, name || null, age || null]);
-            })
+        // Basic validation
+        if (!sid || sid.length !== 4) {
+            reject(new Error("Invalid Student ID"));
+            return;
+        }
+        if (!name || name.length < 2) {
+            reject(new Error("Invalid Name"));
+            return;
+        }
+        if (!age || age < 18) {
+            reject(new Error("Invalid Age"));
+            return;
+        }
+
+        pool.query('INSERT INTO student (sid, name, age) VALUES (?, ?, ?)', 
+            [sid, name, age])
             .then((result) => {
                 resolve(result);
             })
@@ -47,7 +53,6 @@ const addStudent = function (name, age) {
             });
     });
 };
-
 // Get a student by ID
 const getStudentById = function (id) {
     return new Promise((resolve, reject) => {

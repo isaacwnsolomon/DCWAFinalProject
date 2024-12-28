@@ -22,19 +22,52 @@ router.get("/", (req,res) => {
         res.render('addStudent');
     });
 
-    // route to hadnle add student
-    router.post('/add',(req,res) => {
-        const {name, age} = req.body;
-        mysqlDAO.addStudent(name,age)
+   // Route to handle add student with validation
+router.post('/add', (req, res) => {
+    const { sid, name, age } = req.body;
+    const errors = [];
+
+    // Validate Student ID
+    if (!sid || sid.length !== 4) {
+        errors.push("Student ID must be exactly 4 characters");
+    }
+
+    // Validate Name
+    if (!name || name.length < 2) {
+        errors.push("Name must be at least 2 characters");
+    }
+
+    // Validate Age 
+    if (!age || parseInt(age) < 18) {
+        errors.push("Age must be 18 or older");
+    }
+
+    // If there are validation errors, render form again with errors
+    if (errors.length > 0) {
+        return res.render('addStudent', {
+            errors,
+            sid,
+            name,
+            age
+        });
+    }
+
+    // If validation passes add student
+    mysqlDAO.addStudent(sid, name, parseInt(age))
         .then(() => {
             res.redirect('/students');
         })
         .catch((error) => {
             console.error(error);
-            res.status(500).send('Error adding student');
-        })
-    })
-
+            errors.push("Error adding student: " + error.message);
+            res.render('addStudent', {
+                errors,
+                sid,
+                name,
+                age
+            });
+        });
+});
 // Route to display Update Student
 router.get('/update/:id', (req, res) => {
     const studentId = req.params.id;
