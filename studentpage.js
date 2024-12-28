@@ -81,18 +81,60 @@ router.get('/update/:id', (req, res) => {
         });
 });
 
-// Route to handle Update Student
+// Route to handle Update Student with validation
 router.post('/update/:id', (req, res) => {
     const studentId = req.params.id;
     const { name, age } = req.body;
-    mysqlDAO.updateStudent(studentId, name, age)
+    const errors = [];
+
+    // Validate Name
+    if (!name || name.length < 2) {
+        errors.push("Name must be at least 2 characters");
+    }
+
+    // Validate Age
+    if (!age || parseInt(age) < 18) {
+        errors.push("Age must be 18 or older");
+    }
+
+    // If there are validation errors, get student data and re-render form
+    if (errors.length > 0) {
+        mysqlDAO.getStudentById(studentId)
+            .then(student => {
+                res.render('updateStudent', {
+                    student,
+                    errors,
+                    name,
+                    age
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                res.status(500).send("Error fetching student details");
+            });
+        return;
+    }
+
+    // If validation passes, update student
+    mysqlDAO.updateStudent(studentId, name, parseInt(age))
         .then(() => {
-            res.redirect('/students'); // Redirect to the students list
+            res.redirect('/students');
         })
         .catch((error) => {
             console.error(error);
-            res.status(500).send('Error updating student');
+            mysqlDAO.getStudentById(studentId)
+                .then(student => {
+                    errors.push("Error updating student: " + error.message);
+                    res.render('updateStudent', {
+                        student,
+                        errors,
+                        name,
+                        age
+                    });
+                })
+                .catch(err => {
+                    res.status(500).send("Error processing request");
+                });
         });
 });
-
 module.exports = router;

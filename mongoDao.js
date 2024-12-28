@@ -30,10 +30,9 @@ const deleteLecturer = function (lecturerId) {
             return;
         }
 
-        // Update to match on _id field directly since it's a string
-        coll.deleteOne({ _id: lecturerId })  // Changed from lecturerId to _id
+        coll.deleteOne({ _id: lecturerId })  
             .then((result) => {
-                console.log("Delete result:", result); // Debug log
+               
                 if (result.deletedCount === 0) {
                     reject("No lecturer found with ID: " + lecturerId);
                 } else {

@@ -29,7 +29,7 @@ promisemysql.createPool({
 }
 const addStudent = function (sid, name, age) {
     return new Promise((resolve, reject) => {
-        // Basic validation
+        //  validation
         if (!sid || sid.length !== 4) {
             reject(new Error("Invalid Student ID"));
             return;
@@ -72,20 +72,32 @@ const getStudentById = function (id) {
 };
 
 // Update a student by ID
-const updateStudent = function (id, name, age) {
+const updateStudent = function (sid, name, age) {
     return new Promise((resolve, reject) => {
-        pool.query('UPDATE student SET name = ?, age = ? WHERE sid = ?', [name, age, id])
+        // Basic validation
+        if (!name || name.length < 2) {
+            reject(new Error("Invalid Name"));
+            return;
+        }
+        if (!age || age < 18) {
+            reject(new Error("Invalid Age"));
+            return;
+        }
+
+        pool.query('UPDATE student SET name = ?, age = ? WHERE sid = ?', 
+            [name, age, sid])
             .then((result) => {
-                console.log('Student updated:', result);
-                resolve(result);
+                if (result.affectedRows === 0) {
+                    reject(new Error("Student not found"));
+                } else {
+                    resolve(result);
+                }
             })
             .catch((error) => {
-                console.error('Error updating student:', error);
                 reject(error);
             });
     });
 };
-
 var getGrades = function(){
     return new Promise((resolve,reject) => {
         pool.query('SELECT student.name AS Student, module.name AS Module, grade.grade AS Grade FROM student LEFT JOIN grade ON student.sid = grade.sid LEFT JOIN module ON grade.mid = module.mid order by student.name')
