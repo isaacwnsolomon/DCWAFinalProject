@@ -10,15 +10,15 @@
     <a href="/"><button>Home</button></a>
     <table border="1">
         <tr>
-            <th>SID</th>
-            <th>MID</th>
+            <th>Student</th>
+            <th>Module</th>
             <th>Grade</th>
         </tr>
         <% gradesList.forEach((grade) => { %>
         <tr>
-            <td><%= grade.sid %></td>
-            <td><%= grade.mid %></td>
-            <td><%= grade.grade %></td>
+            <td><%= grade.Student %></td>
+            <td><%= grade.Module %></td>
+            <td><%= grade.Grade %></td>
         </tr>
         <% }) %>
     </table>

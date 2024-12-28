@@ -83,7 +83,7 @@ const updateStudent = function (id, name, age) {
 
 var getGrades = function(){
     return new Promise((resolve,reject) => {
-        pool.query('SELECT * FROM grade')
+        pool.query('SELECT student.name AS Student, module.name AS Module, grade.grade AS Grade FROM student LEFT JOIN grade ON student.sid = grade.sid LEFT JOIN module ON grade.mid = module.mid order by student.name')
         .then((data) => {
             console.log(data)
             resolve(data)
