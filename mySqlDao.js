@@ -81,5 +81,19 @@ const updateStudent = function (id, name, age) {
     });
 };
 
+var getGrades = function(){
+    return new Promise((resolve,reject) => {
+        pool.query('SELECT * FROM grade')
+        .then((data) => {
+            console.log(data)
+            resolve(data)
+        })
+        .catch((error) => {
+            console.log(error)
+            reject(error)
+        })
+    })
+}
 
-module.exports = { getStudents, addStudent, getStudentById, updateStudent}
+
+module.exports = { getStudents, addStudent, getStudentById, updateStudent, getGrades}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grades</title>
+</head>
+<body>
+    <h1>Grades List</h1>
+    <a href="/"><button>Home</button></a>
+    <table border="1">
+        <tr>
+            <th>SID</th>
+            <th>MID</th>
+            <th>Grade</th>
+        </tr>
+        <% gradesList.forEach((grade) => { %>
+        <tr>
+            <td><%= grade.sid %></td>
+            <td><%= grade.mid %></td>
+            <td><%= grade.grade %></td>
+        </tr>
+        <% }) %>
+    </table>
+</body>
+</html>
