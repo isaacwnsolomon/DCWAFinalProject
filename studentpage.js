@@ -137,4 +137,27 @@ router.post('/update/:id', (req, res) => {
                 });
         });
 });
+router.get('/search', (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    
+    if (!searchTerm) {
+        return res.redirect('/students');
+    }
+
+    mysqlDAO.searchStudents(searchTerm)
+        .then((students) => {
+            res.render('student', {
+                studentsList: students,
+                searchTerm: searchTerm
+            });
+        })
+        .catch((error) => {
+            console.error('Search error:', error);
+            res.render('student', {
+                studentsList: [],
+                searchTerm: searchTerm,
+                error: 'Error performing search'
+            });
+        });
+});
 module.exports = router;

@@ -122,5 +122,24 @@ const getModulesByLecturerId = function(lecturerId) {
             });
     });
 };
+const searchStudents = function(searchTerm) {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT * FROM student 
+            WHERE sid LIKE ? OR name LIKE ?
+        `;
+        const searchPattern = `%${searchTerm}%`;
+        
+        pool.query(query, [searchPattern, searchPattern])
+            .then((results) => {
+                resolve(results);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
 
-module.exports = { getModulesByLecturerId, getStudents, addStudent, getStudentById, updateStudent, getGrades}
+module.exports = { 
+    getStudents, addStudent, getStudentById, updateStudent, getGrades, getModulesByLecturerId, searchStudents    
+};

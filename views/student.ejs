@@ -10,6 +10,29 @@
     <a href="/students/add"><button>Add Student</button></a>
     <br>
     <a href="/"><button>Home</button></a>
+    <div style="margin: 20px 0;">
+        <form action="/students/search" method="GET" class="search-form">
+            <input 
+                type="text" 
+                name="searchTerm" 
+                placeholder="Search by name or ID..."
+                value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>"
+            >
+            <button type="submit">Search</button>
+            <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                <a href="/students"><button type="button">Clear Search</button></a>
+            <% } %>
+        </form>
+    </div>
+    <% if (typeof studentsList !== 'undefined' && studentsList.length === 0) { %>
+        <div class="no-results">
+            <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                No students found matching "<%= searchTerm %>"
+            <% } else { %>
+                No students found in the database
+            <% } %>
+        </div>
+    <% } %>
     <table border="1">
         <tr>
             <th>SID</th>
