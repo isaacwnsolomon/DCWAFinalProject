@@ -4,21 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grades</title>
+     <!-- Link to an external stylesheet -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <h1>Grades List</h1>
+     <!-- Navigation button to return to the home page -->
     <a href="/"><button>Home</button></a>
+    <!-- Table to display the list of grades -->
     <table border="1">
         <tr>
             <th>Student</th>
             <th>Module</th>
             <th>Grade</th>
         </tr>
+          <!-- Loop through the gradesList array and render a row for each grade -->
         <% gradesList.forEach((grade) => { %>
         <tr>
             <td><%= grade.Student %></td>
             <td><%= grade.Module %></td>
             <td><%= grade.Grade %></td>
+            <td>
+                  <!-- Link to the edit page for the specific grade -->
+                <a href="/grades/edit/<%= grade.sid %>/<%= grade.mid %>">
+                    <button class="edit-btn">Edit</button>
+                </a>
+            </td>
         </tr>
         <% }) %>
     </table>

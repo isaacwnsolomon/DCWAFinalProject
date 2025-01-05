@@ -1,29 +1,29 @@
+// Importing necessary imports
 var express = require('express')
 var mongoDao = require('./mongoDao')
 var mysqlDAO = require('./mySqlDao') 
 const router = express.Router();
 
+// route to get and display all lecturers
 router.get("/", (req,res) => {
-    mongoDao.findAll()
+    mongoDao.findAll() // fetch all lecturees from MongoDB
     .then((data) => {
-        console.log("OK=" + JSON.stringify(data))
-        res.render("lecturer", { lecturersList: data });
+        res.render("lecturer", { lecturersList: data }); // render lecturers list
     })
     .catch((error) => {
-        console.log("Err=" + JSON.stringify(error))
-        res.send(err)
+        res.send(err) // send error message
     })
 })
 
 // Updated delete route
 router.get("/delete/:lid", (req, res) => {
-    const lecturerId = req.params.lid;
+    const lecturerId = req.params.lid; // get lecturer id from parameters
     
     // First check if lecturer teaches any modules
     mysqlDAO.getModulesByLecturerId(lecturerId)
         .then((modules) => {
             if (modules.length > 0) {
-                // Lecturer teaches modules, send error message
+                // Lecturer teaches modules send error message
                 res.render("lecturer", { 
                     error: `Cannot delete Lecturer ${lecturerId}. They are teaching ${modules.length} module(s).`,
                     lecturersList: [] 
@@ -46,6 +46,7 @@ router.get("/delete/:lid", (req, res) => {
             }
         })
         .catch((error) => {
+            // hadndel any erorrs during process
             console.error("Error:", error);
             res.status(500).send("Error processing request: " + error);
         });
@@ -53,5 +54,5 @@ router.get("/delete/:lid", (req, res) => {
         
        
 
-
+// export so can be used in other parts of app
 module.exports = router;

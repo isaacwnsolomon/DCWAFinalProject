@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students</title>
+     <!-- Link to an external stylesheet -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <h1>Students List</h1>
+      <!-- Navigation button to add a new student -->
     <a href="/students/add"><button>Add Student</button></a>
     <br>
+     <!-- Navigation button to return to the home page -->
     <a href="/"><button>Home</button></a>
+    <!-- Search form for finding students by name or ID -->
     <div style="margin: 20px 0;">
         <form action="/students/search" method="GET" class="search-form">
             <input 
@@ -20,12 +25,15 @@
             >
             <button type="submit">Search</button>
             <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+                 <!-- Clear search button to reset the search results -->
                 <a href="/students"><button type="button">Clear Search</button></a>
             <% } %>
         </form>
     </div>
+     <!-- Message displayed when no students are found -->
     <% if (typeof studentsList !== 'undefined' && studentsList.length === 0) { %>
         <div class="no-results">
+            <!-- Message when a search term is provided but no matches are found -->
             <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
                 No students found matching "<%= searchTerm %>"
             <% } else { %>
@@ -33,6 +41,7 @@
             <% } %>
         </div>
     <% } %>
+    <!-- Table to display the list of students -->
     <table border="1">
         <tr>
             <th>SID</th>
@@ -40,12 +49,14 @@
             <th>Age</th>
             <th>Actions</th>
         </tr>
+         <!-- Loop through the studentsList array and render a row for each student -->
         <% studentsList.forEach((student) => { %>
         <tr>
             <td><%= student.sid %></td>
             <td><%= student.name %></td>
             <td><%= student.age %></td>
             <td>
+                   <!-- Link to the update page for the specific student -->
                 <a href="/students/update/<%= student.sid %>"><button>Update</button></a>
             </td>
         </tr>

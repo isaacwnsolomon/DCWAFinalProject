@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecturers</title>
-
+     <!-- Link to an external stylesheet -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <h1>Lecturers</h1>
     <a href="/"><button>Home</button></a>
-
+<!-- Display error messages dynamically if any exist -->
     <% if (typeof error !== 'undefined' && error) { %>
         <div style="color: red; margin: 10px 0;">
             <%= error %>
         </div>
     <% } %>
+     <!-- Table to display the list of lecturers -->
     <table border="1">
         <tr>
             <th>Lecturer ID</th>
@@ -22,11 +24,13 @@
             <th>Department ID</th>
             <th>Action</th>
         </tr>
+          <!-- Loop through the lecturersList array and render a row for each lecturer -->
         <% lecturersList.forEach((lecturer) => { %>
         <tr>
             <td><%= lecturer._id %></td>
             <td><%= lecturer.name %></td>
             <td><%= lecturer.did %></td>
+            <!-- Link to delete the lecturer -->
             <td><a href="/lecturers/delete/<%= lecturer._id %>">Delete</a></td>
         </tr>
         <% }) %>

@@ -2,6 +2,7 @@ var express = require('express')
 var mysqlDAO = require('./mySqlDao')
 var mongoDao = require('./mongoDao')
 var app = express()
+app.use(express.static('public'));
 const studentpage = require('./studentpage'); // Import the students route
 const gradepage = require('./gradepage');
 const lecturerpage = require('./lecturerpage');

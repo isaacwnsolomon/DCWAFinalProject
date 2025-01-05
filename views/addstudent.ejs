@@ -7,25 +7,28 @@
     <style>
         .error { color: red; }
     </style>
+     <!-- Link to an external stylesheet -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <h1>Add a New Student</h1>
     
-    <!-- Display validation errors if any -->
+    <!-- Display validation errors -->
     <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
         <ul class="error">
+             <!-- Render each error as a list item -->
             <% errors.forEach(error => { %>
                 <li><%= error %></li>
             <% }) %>
         </ul>
     <% } %>
-
+    <!-- Instructions for input validation -->
     <ul>
         <li>Student ID should be 4 characters</li>
         <li>Student Name should be at least 2 characters</li>
         <li>Student Age should be at least 18</li>
     </ul>
-
+<!-- Form to add a new student -->
     <form action="/students/add" method="POST">
         <label for="sid">Student ID:</label>
         <input type="text" id="sid" name="sid" value="<%= typeof sid !== 'undefined' ? sid : '' %>" required><br>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Grade</title>
+    <style>
+        .error { color: red; }
+    </style>
+     <!-- Link to an external stylesheet -->
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Edit Grade</h1>
+      <!-- Display validation errors dynamically if any exist -->
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <ul class="error">
+            <% errors.forEach(error => { %>
+                <li><%= error %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+  <!-- Form for editing a grade -->
+    <form action="/grades/edit/<%= grade.sid %>/<%= grade.mid %>" method="POST">
+        <div class="form-group">
+            <label>Student: <%= grade.Student %></label>
+        </div>
+        <div class="form-group">
+            <label>Module: <%= grade.Module %></label>
+        </div>
+        <!-- Input field for editing the grade -->
+        <div class="form-group">
+            <label for="grade">Grade:</label>
+            <input type="number" id="grade" name="grade" 
+                   value="<%= grade.Grade %>" 
+                   min="0" max="100" required>
+        </div>
+         <!-- Submit button to save the updated grade -->
+        <button type="submit">Update Grade</button>
+          <!-- Cancel button to navigate back to the grades page -->
+        <a href="/grades"><button type="button">Cancel</button></a>
+    </form>
+</body>
+</html>

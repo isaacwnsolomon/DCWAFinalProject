@@ -1,11 +1,11 @@
-var express = require('express')
-var mysqlDAO = require('./mySqlDao')
+var express = require('express') // import express
+var mysqlDAO = require('./mySqlDao') // import mysql access
 const router = express.Router();
 
 
 
 
-
+// route to display list of students 
 router.get("/", (req,res) => {
     mysqlDAO.getStudents()
     .then((data) => {
@@ -55,7 +55,7 @@ router.post('/add', (req, res) => {
     // If validation passes add student
     mysqlDAO.addStudent(sid, name, parseInt(age))
         .then(() => {
-            res.redirect('/students');
+            res.redirect('/students'); // redirct to student page
         })
         .catch((error) => {
             console.error(error);
@@ -118,7 +118,7 @@ router.post('/update/:id', (req, res) => {
     // If validation passes, update student
     mysqlDAO.updateStudent(studentId, name, parseInt(age))
         .then(() => {
-            res.redirect('/students');
+            res.redirect('/students'); // resdirect to list of students
         })
         .catch((error) => {
             console.error(error);
@@ -137,13 +137,14 @@ router.post('/update/:id', (req, res) => {
                 });
         });
 });
+// route to hadnle searching for students
 router.get('/search', (req, res) => {
-    const searchTerm = req.query.searchTerm;
+    const searchTerm = req.query.searchTerm; // extract search term from query param
     
     if (!searchTerm) {
         return res.redirect('/students');
     }
-
+// searches by name or ID
     mysqlDAO.searchStudents(searchTerm)
         .then((students) => {
             res.render('student', {
@@ -154,10 +155,11 @@ router.get('/search', (req, res) => {
         .catch((error) => {
             console.error('Search error:', error);
             res.render('student', {
-                studentsList: [],
+                studentsList: [], // render empty list on error
                 searchTerm: searchTerm,
                 error: 'Error performing search'
             });
         });
 });
+// export router for use in application
 module.exports = router;
